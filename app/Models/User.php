@@ -41,4 +41,31 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getUsers(string|null $search = null)
+    {
+        return $this->where('name', 'LIKE', "%{$search}%")
+            ->get();
+    }
+
+    public function storeUser($data)
+    {
+        $data['password'] = bcrypt($data['password']);
+        return $this->create($data);
+    }
+
+    public function updateUser($data, $password, $id)
+    {
+        if ($password) {
+            $data['password'] = bcrypt($password);
+        }
+        return $this->where('id', $id)
+            ->update($data);
+    }
+
+    public function deleteUser($id)
+    {
+        return $this->where('id', $id)
+            ->delete();
+    }
 }
