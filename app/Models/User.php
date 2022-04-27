@@ -68,4 +68,9 @@ class User extends Authenticatable
         return $this->where('id', $id)
             ->delete();
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
